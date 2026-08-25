@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<title>Guia do Keimenon</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+</head>
+<body>
+<style>
+  :root{
+    --papel:#f6f1e7; --tinta:#2b2620; --bronze:#a0762c; --bronze-suave:#efe3cd;
+    --linha:#d8cdb8; --meio:#7a6b52; --cartao:#fffdf9;
+    --painel:#1f1b16; --painel-tinta:#f0e4d4; --painel-meio:#cdbfa8; --verde:#5c7a4f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --papel:#211c15; --tinta:#e9decb; --bronze:#c99b4e; --bronze-suave:#3a2f1e;
+      --linha:#4a3f2e; --meio:#a89678; --cartao:#2b2519;
+    }
+  }
+  :root[data-theme="dark"]{
+    --papel:#211c15; --tinta:#e9decb; --bronze:#c99b4e; --bronze-suave:#3a2f1e;
+    --linha:#4a3f2e; --meio:#a89678; --cartao:#2b2519;
+  }
+  body{background:var(--papel);color:var(--tinta);font-family:Georgia,"Times New Roman",serif;
+    font-size:18px;line-height:1.75;margin:0;padding:48px 20px 80px}
+  .folha{max-width:680px;margin:0 auto}
+  h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:46px;line-height:1.1;
+    margin:0 0 6px;text-wrap:balance}
+  .sub{color:var(--meio);font-size:19px;margin:0 0 14px}
+  .dados{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);
+    padding:14px 2px;margin:26px 0 44px;font-size:17px;display:grid;gap:6px}
+  .dados b{color:var(--bronze)}
+  .dados code{background:var(--bronze-suave);padding:2px 8px;border-radius:6px;font-size:16px}
+
+  .passo{display:grid;grid-template-columns:52px 1fr;gap:18px;margin:0 0 46px}
+  .num{width:44px;height:44px;border-radius:50%;background:var(--bronze);color:#fff;
+    font-family:"Cormorant Garamond",Georgia,serif;font-size:26px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .passo h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:29px;
+    margin:4px 0 10px;line-height:1.15;text-wrap:balance}
+  .passo p{margin:0 0 12px}
+  .passo p:last-child{margin-bottom:0}
+
+  .tela{background:var(--cartao);border:1px solid var(--linha);border-radius:12px;
+    padding:16px;margin:16px 0 10px;font-size:14px;overflow-x:auto}
+  .tela .browser{background:var(--bronze-suave);border-radius:8px;padding:7px 12px;font-size:13px;
+    color:var(--meio);margin-bottom:12px;white-space:nowrap;overflow:hidden}
+  .escura{background:var(--painel);color:var(--painel-tinta);text-align:center;padding:30px 16px;border-radius:10px}
+  .escura .marca{font-size:24px;font-family:"Cormorant Garamond",Georgia,serif}
+  .escura .campo{background:#2b2620;border:1px solid #6b5c44;color:#fff;border-radius:8px;
+    padding:9px;width:75%;max-width:230px;margin:14px auto 8px;letter-spacing:4px;font-size:15px}
+  .escura .botao{background:var(--bronze);color:#fff;border-radius:8px;padding:9px;width:75%;max-width:230px;margin:0 auto}
+
+  .colunas{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+  .coluna{border:1px solid var(--linha);border-radius:8px;padding:10px 12px;background:var(--papel)}
+  .coluna h5{margin:0 0 6px;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--bronze)}
+  .coluna .txt{font-size:13px;line-height:1.6;color:var(--tinta)}
+  .grifo{background:var(--bronze-suave);border-bottom:2px dotted var(--bronze);padding:0 2px}
+  .barra{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .pill{border:1px solid var(--linha);border-radius:99px;padding:3px 11px;font-size:12px;color:var(--meio);white-space:nowrap}
+  .pill.ativa{background:var(--bronze);border-color:var(--bronze);color:#fff}
+
+  .painelzinho{background:var(--painel);color:var(--painel-tinta);border-radius:10px;padding:14px 16px;text-align:left}
+  .painelzinho .cab{font-size:17px;margin-bottom:8px}
+  .painelzinho .cab small{color:var(--painel-meio);font-size:12px;margin-left:8px}
+  .painelzinho .secao{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--bronze);margin:10px 0 3px}
+  .painelzinho .linha-txt{font-size:12.5px;color:var(--painel-meio);line-height:1.55}
+  .caixa-verde{background:#eef3ea;border-left:3px solid var(--verde);color:#33402c;
+    padding:8px 10px;border-radius:0 8px 8px 0;font-size:12.5px;margin-top:6px}
+  .botao-mini{display:inline-block;background:var(--bronze-suave);border:1px solid var(--linha);
+    border-radius:8px;padding:4px 10px;font-size:12px;color:var(--tinta);margin-top:8px}
+
+  .livro{border:1px solid var(--linha);border-left:3px solid var(--bronze);border-radius:8px;
+    background:var(--papel);padding:10px 12px;text-align:left}
+  .livro h5{margin:0 0 5px;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--bronze)}
+  .livro .txt{font-size:12.5px;line-height:1.6}
+  .livro .pagina{color:var(--meio);font-size:11.5px;margin-top:5px}
+
+  .legenda{list-style:none;margin:10px 0 0;padding:0;font-size:15.5px;color:var(--meio)}
+  .legenda li{margin:4px 0;padding-left:26px;position:relative}
+  .legenda li::before{content:attr(data-n);position:absolute;left:0;top:2px;width:17px;height:17px;
+    border-radius:50%;background:var(--bronze);color:#fff;font-size:11px;display:flex;
+    align-items:center;justify-content:center;font-family:Georgia,serif}
+  .marcador{display:inline-flex;width:17px;height:17px;border-radius:50%;background:var(--bronze);
+    color:#fff;font-size:11px;align-items:center;justify-content:center;vertical-align:1px}
+
+  .cuidado{background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:20px 24px;margin-top:8px}
+  .cuidado h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:27px;margin:0 0 10px}
+  .cuidado ul{margin:0;padding-left:20px}
+  .cuidado li{margin-bottom:10px}
+  .cuidado li:last-child{margin-bottom:0}
+  .rodape{color:var(--meio);font-size:15px;margin-top:44px;border-top:1px solid var(--linha);padding-top:16px}
+</style>
+
+<div class="folha">
+  <h1>Guia do Keimenon</h1>
+  <p class="sub">Passo a passo para ler Tucídides comparando o grego com as traduções.</p>
+
+  <div class="dados">
+    <div><b>Endereço:</b> <code>kordep.github.io/keimenon</code></div>
+    <div><b>Senha:</b> você recebe por mensagem separada. É pedida uma única vez.</div>
+    <div><b>Precisa instalar algo?</b> Não. Funciona no navegador (Chrome, Edge ou outro).</div>
+  </div>
+
+  <div class="passo">
+    <div class="num">1</div>
+    <div>
+      <h2>Abra o endereço</h2>
+      <p>Digite o endereço na barra do navegador e aperte Enter.</p>
+      <div class="tela" aria-hidden="true">
+        <div class="browser">🔒 kordep.github.io/keimenon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">2</div>
+    <div>
+      <h2>Digite a senha</h2>
+      <p>Aparece uma tela escura com um campo no centro. Digite a senha e aperte o botão <b>Abrir</b>.</p>
+      <p>Isso é pedido <b>só na primeira vez</b> em cada computador. Nas próximas, o programa abre direto.</p>
+      <div class="tela" aria-hidden="true">
+        <div class="escura">
+          <div class="marca">Keimenon</div>
+          <div class="campo">••••••••••</div>
+          <div class="botao">Abrir</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">3</div>
+    <div>
+      <h2>Conheça a tela de leitura</h2>
+      <p>O texto aparece em duas colunas: o original de Tucídides à esquerda e a tradução em inglês à direita.</p>
+      <p>O grego vem escrito em <b>letras latinas</b> (por exemplo, <i>dēmokratia</i>). Para ver as letras gregas (δημοκρατία), aperte o botão <b>ābc transliteração</b> na barra de cima. Apertando de novo, volta.</p>
+      <div class="tela" aria-hidden="true">
+        <div class="barra">
+          <span class="pill">‹</span><span class="pill">›</span>
+          <span class="pill ativa">Crawley</span><span class="pill">Warner</span>
+          <span class="pill">+ 2ª tradução</span><span class="pill">ābc transliteração</span>
+        </div>
+        <div class="colunas">
+          <div class="coluna">
+            <h5>Original — grego</h5>
+            <div class="txt">chrōmetha gar politeiai… kai onoma men… <span class="grifo">dēmokratia</span> keklētai…</div>
+          </div>
+          <div class="coluna">
+            <h5>Tradução — inglês (Crawley)</h5>
+            <div class="txt">Our constitution does not copy the laws of neighbouring states… it is called a <span class="grifo">democracy</span>…</div>
+          </div>
+        </div>
+      </div>
+      <ul class="legenda">
+        <li data-n="1">Os botões <b>Crawley</b> e <b>Warner</b> trocam a tradução na hora.</li>
+        <li data-n="2">O botão <b>+ 2ª tradução</b> mostra as duas traduções lado a lado.</li>
+        <li data-n="3">Palavras <span class="grifo">marcadas</span> são termos importantes daquele trecho.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">4</div>
+    <div>
+      <h2>Mude de trecho</h2>
+      <p>As setas <b>‹</b> e <b>›</b> no alto da tela passam para o parágrafo anterior ou seguinte. Exemplo: do trecho 2.73 para o 2.74. As setas ← → do teclado fazem o mesmo.</p>
+      <p>Para ir direto a um trecho: aperte <b>✎ Editar entradas</b>, digite a referência (por exemplo, <b>5.89</b>) no campo do passo 1, aperte <b>Buscar</b> e depois <b>Montar comparação</b>. A obra completa está disponível: livros 1 a 8.</p>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">5</div>
+    <div>
+      <h2>Clique numa palavra</h2>
+      <p>Clique em qualquer palavra, do grego ou da tradução. Um quadro escuro aparece embaixo com a análise daquela escolha de tradução.</p>
+      <div class="tela" aria-hidden="true">
+        <div class="painelzinho">
+          <div class="cab">δημοκρατία <small>dēmokratia · tradução: democracy</small></div>
+          <div class="secao">Sentido no original</div>
+          <div class="linha-txt">O que a palavra significava no grego do século V a.C.</div>
+          <div class="secao">A escolha do tradutor</div>
+          <div class="linha-txt">Por que o tradutor usou essa palavra em inglês, e o que se ganhou ou se perdeu.</div>
+          <div class="secao">Como outros traduziram / alternativas</div>
+          <div class="linha-txt">Outras opções possíveis. Quando a opção vem de um tradutor conhecido, o nome dele aparece ao lado. Quando é uma hipótese do assistente, aparece a etiqueta “sugestão do modelo”.</div>
+          <div class="secao">O que está em jogo</div>
+          <div class="linha-txt">A consequência filosófica da escolha.</div>
+        </div>
+      </div>
+      <p>A palavra correspondente acende na outra coluna, para você ver o par grego–inglês.</p>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">6</div>
+    <div>
+      <h2>Escreva a sua interpretação</h2>
+      <p>Dentro do quadro escuro, no canto inferior direito, há um espaço chamado <b>Sua interpretação</b>. Escreva ali a sua leitura daquela palavra.</p>
+      <p>O texto é guardado neste computador. Quando você clicar na mesma palavra outra vez, ele reaparece. O botão <b>💾 Salvar comentário</b> confirma a gravação.</p>
+      <div class="tela" aria-hidden="true">
+        <div class="painelzinho">
+          <div class="secao">Sua interpretação</div>
+          <div class="caixa-verde">O ponto de Péricles não é o voto, e sim a participação no poder…</div>
+          <span class="botao-mini">💾 Salvar comentário</span>
+          <span class="botao-mini">⬇ Exportar anotações</span>
+        </div>
+      </div>
+      <p>O botão <b>⬇ Exportar anotações</b> gera um arquivo com todos os quadros que você comentou — a análise completa mais o seu texto — bom para guardar ou imprimir.</p>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">7</div>
+    <div>
+      <h2>Reveja seus comentários</h2>
+      <p>No alto da página há o menu <b>🗒 Comentários</b>. Ele lista tudo o que você já escreveu: a palavra, o trecho onde ela está e o seu comentário.</p>
+      <p>Há um campo de busca. Clicar num item da lista abre o trecho de novo, com a análise e o seu comentário no lugar.</p>
+      <div class="tela" aria-hidden="true">
+        <div class="coluna" style="border-left:3px solid var(--bronze)">
+          <div class="txt"><b>δημοκρατία</b> <span style="color:var(--meio)">(dēmokratía)</span><br>
+          <span style="color:var(--meio);font-size:12px">Tucídides 2.37 — Oração Fúnebre · «chrōmetha gar politeiai…»</span><br>
+          💬 O ponto de Péricles não é o voto, e sim a participação no poder…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">8</div>
+    <div>
+      <h2>Consulte os dicionários</h2>
+      <p>Abaixo do quadro de análise aparecem caixas com fontes independentes:</p>
+      <p><b>📖 Wiktionary</b> — dicionário on-line de grego antigo.<br>
+      <b>📕 Preus</b> e <b>📕 Peters</b> — dois dicionários de filosofia grega que acompanham esta edição. O texto mostrado é o verbete <b>literal</b> do livro, com a página indicada no final.</p>
+      <div class="tela" aria-hidden="true">
+        <div class="livro">
+          <h5>📕 Preus — Historical Dictionary of Ancient Greek Philosophy</h5>
+          <div class="txt">DĒMOKRATIA. Δημοκρατία. “Rule by the people.” In classical Greece, “democracy” meant direct popular rule by the (male) citizens…</div>
+          <div class="pagina">Trechos literais do livro · p. 119</div>
+        </div>
+      </div>
+      <p>Se a palavra clicada não tiver verbete próprio, o programa procura o conceito central da análise. Se não houver nada, ele avisa: “Nenhum verbete para esta palavra nos livros carregados”. Isso é normal.</p>
+    </div>
+  </div>
+
+  <div class="passo">
+    <div class="num">9</div>
+    <div>
+      <h2>Sobre a chave de análise</h2>
+      <p>As análises ao vivo usam um serviço de inteligência artificial, que exige uma chave de acesso. <b>Quem te enviou o programa configura isso para você</b> (botão ⚙ Configurar API).</p>
+      <p>Sem a chave, você ainda pode: ler a obra inteira, trocar as traduções, usar os dicionários das palavras já analisadas e ver as análises de demonstração do trecho 2.37 (as palavras sublinhadas).</p>
+    </div>
+  </div>
+
+  <div class="cuidado">
+    <h2>Três cuidados</h2>
+    <ul>
+      <li><b>Não use a limpeza de dados do navegador</b> (histórico, cookies, dados de sites) nesta página. Ela apagaria seus comentários e pediria a senha de novo. Se usar, o backup do menu Comentários recupera o que você exportou.</li>
+      <li><b>As análises são feitas por inteligência artificial.</b> São um ponto de partida. Antes de citar em trabalho acadêmico, confira numa edição crítica. As caixas 📕 existem justamente para isso: são texto literal de livros de referência, com página.</li>
+      <li><b>A senha protege o material da edição.</b> Não repasse o endereço junto com a senha para outras pessoas.</li>
+    </ul>
+  </div>
+
+  <p class="rodape">Keimenon — leitura comparada de Tucídides. Texto grego: edição Stuart Jones (Perseus Digital Library, domínio público). Traduções: Richard Crawley (domínio público) e Rex Warner (Penguin, edição do leitor). Este guia acompanha a edição beta de apresentação. Criado por <b>Kranz-Muarrek Helenicos.filo</b>.</p>
+</div>
+
+</body>
+</html>
