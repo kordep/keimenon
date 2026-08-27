@@ -82,6 +82,21 @@
   .alts li{font-size:14px;margin-bottom:6px;padding-left:14px;position:relative}
   .alts li:before{content:"›";position:absolute;left:0;color:var(--accent)}
   .alts code{background:var(--accent-soft);padding:1px 6px;border-radius:5px;font-family:Georgia,serif}
+  .betaflag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--line);border-radius:99px;padding:2px 10px;vertical-align:6px}
+  .ocorr{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 18px;display:none}
+  .ocorr h4{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+  .ocorr h4 .lex-w{font-family:"GFS Didot",Georgia,serif;text-transform:none;font-size:15px}
+  .ocorr .filtros{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-size:12.5px}
+  .ocorr .filtros button{border:1px solid var(--line);background:transparent;border-radius:99px;padding:2px 10px;font-size:12px;cursor:pointer;color:inherit}
+  .ocorr .filtros button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .ocorr .filtros select{font-size:12.5px;padding:2px 6px;border-radius:6px;border:1px solid var(--line);background:transparent;color:inherit}
+  .oc-item{padding:7px 0;border-top:1px dashed var(--line);font-size:13.5px;cursor:pointer}
+  .oc-item:hover{background:var(--accent-soft)}
+  .oc-item b{color:var(--accent)}
+  .oc-item .oc-snip{color:#7a6b52}
+  .passbox{margin:10px 0 0;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;background:var(--panel)}
+  .passbox textarea{width:100%;box-sizing:border-box;min-height:64px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:14px;background:#fffdf9;resize:vertical}
+  .passbox .small{color:var(--accent)}
   .noteitem{padding:9px 12px;border-bottom:1px solid var(--line);cursor:pointer}
   .noteitem:hover{background:var(--accent-soft)}
   .noteitem .nmeta{font-size:12px;color:#8a7a5f}
@@ -131,12 +146,25 @@
 </head>
 <body>
 <header>
-  <h1>Keimenon</h1>
+  <h1>Keimenon <span class="betaflag" title="deploy fechado de teste — não público">closed-beta</span></h1>
+  <button class="ghost" id="painelBtn">🏠 Painel</button>
   <button class="ghost" id="notesBtn">🗒 Comentários</button>
   <button class="ghost" id="cfgToggle">⚙ Configurar API</button>
 </header>
 
 <div class="wrap">
+
+  <!-- PAINEL DO USUÁRIO -->
+  <div class="card" id="painel" style="display:none">
+    <h2>Seu painel</h2>
+    <div class="row" style="align-items:center">
+      <div style="flex:0 0 260px"><label>Nome de usuário</label><input type="text" id="userName" placeholder="como quer ser chamado?"></div>
+      <div class="small" id="userHello" style="margin-top:18px"></div>
+    </div>
+    <div style="margin-top:14px"><label>Histórico de pesquisas</label><div id="histList" class="small" style="margin-top:6px"></div></div>
+    <div style="margin-top:14px"><label>Comentários recentes</label><div id="painelNotes"></div>
+      <button class="ghost" id="painelVerNotas" style="margin-top:8px">ver todos em 🗒 Comentários</button></div>
+  </div>
 
   <!-- COMENTÁRIOS -->
   <div class="card" id="notesPanel" style="display:none">
@@ -294,6 +322,7 @@
     </span>
     <button class="ghost" id="addTransBtn">+ 2ª tradução</button>
     <button class="ghost" id="translitBtn" title="grego em caracteres latinos">ābc transliteração</button>
+    <button class="ghost" id="passBtn" title="anotação sobre o trecho inteiro">🗒 nota da passagem</button>
     <span class="pill" id="selPill"></span>
     <input type="file" id="warnerQuickFile" accept="application/pdf" style="display:none">
   </div>
@@ -304,6 +333,10 @@
     <div class="textcol"><h3>Original — grego</h3><div class="grk" id="origRender"></div></div>
     <div class="textcol"><h3 id="transHead">Tradução</h3><div class="eng" id="transRender"></div></div>
     <div class="textcol" id="trans2Col" style="display:none"><h3 id="trans2Head">Tradução 2</h3><div class="eng" id="trans2Render"></div></div>
+  </div>
+  <div class="passbox" id="passBox" style="display:none">
+    <label>🗒 Nota da passagem <span class="small" id="passStatus"></span></label>
+    <textarea id="passNote" placeholder="anotação sobre o trecho inteiro (fica salva neste navegador e aparece no menu Comentários)"></textarea>
   </div>
   <div class="barbtn" id="interpBar" style="display:none">
     <button id="interpBtn" disabled>Interpretar palavra selecionada</button>
@@ -339,6 +372,18 @@
     </div>
   </div>
 
+  <div class="ocorr" id="ocorrBox">
+    <h4>🔎 Ocorrências na obra — <span class="lex-w" id="ocorrTermoEl"></span></h4>
+    <div class="filtros">
+      <button id="ocModoRad" class="on" title="encontra formas flexionadas">radical</button>
+      <button id="ocModoEx" title="apenas a forma exata">exata</button>
+      <select id="ocLivro"><option value="todos">todos os livros</option>
+        <option>1</option><option>2</option><option>3</option><option>4</option>
+        <option>5</option><option>6</option><option>7</option><option>8</option></select>
+      <span class="small" id="ocResumo"></span>
+    </div>
+    <div id="ocLista"></div>
+  </div>
   <div id="lexPanel"></div>
 
   <details>
@@ -2509,7 +2554,7 @@ $("findBtn").onclick = () => {
   let hit = CORPUS[key];
   if(!hit){ const r=parseRef(); if(r) hit = CORPUS["tucidides "+r.ref]; }  // aceita "2.44" sem o autor
   if(!hit){ for(const k in CORPUS){ if(k.startsWith(key)||key.startsWith(k)){hit=CORPUS[k];break;} } }
-  if(hit){ $("origText").value = hit; st.className="status ok"; st.textContent="✓ Trecho encontrado no acervo embutido."; }
+  if(hit){ $("origText").value = hit; st.className="status ok"; st.textContent="✓ Trecho encontrado no acervo embutido."; const rr=parseRef(); if(rr) logHist(rr.ref); }
   else { st.className="status err"; st.textContent="Referência não encontrada. Use Livro.Capítulo (ex.: 2.44 ou Tucídides 2.44) — a obra completa (livros 1–8) está embutida."; }
   fillTranslation();
 };
@@ -2607,6 +2652,7 @@ function renderWords(el, text, side, displayFn){
       document.querySelectorAll(".w.sel").forEach(s=>s.classList.remove("sel"));
       span.classList.add("sel");
       selWord = tok.replace(/[.,;··:!?»«"")(]/g,"").trim(); selSide = side;
+      if(side==="orig") renderOcorrencias((span.dataset.o||tok).replace(/[.,;··:!?»«"")(]/g,"").trim());
       $("selPill").innerHTML = "palavra-alvo: <b>"+selWord+"</b> ("+(side==="orig"?"original":"tradução")+")";
       $("interpBtn").disabled=false;
       runInterpretation();
@@ -2743,6 +2789,7 @@ function renderResult(d){
   $("r-alts").innerHTML = (d.alternativas||[]).map(a=>`<li><code>${escH(a.termo)}</code> — ${escH(a.efeito)}${a.fonte?` <span class="altsrc">${escH(a.fonte)}</span>`:` <span class="altsrc hyp">sugestão do modelo</span>`}</li>`).join("");
   showCorrespondences(d);
   restoreNote(d);
+  if(d.lemma && normLemma(d.lemma)) renderOcorrencias(d.lemma);
   renderLexicon((d.lemma||selWord||"").replace(/[.,;·:!?»«""'')(]/g,"").trim(), d);
   $("result").style.display="block";
   $("result").scrollIntoView({behavior:"smooth",block:"nearest"});
@@ -2961,7 +3008,7 @@ function renderTranslit(){
 }
 $("translitBtn").onclick = ()=>{ translitOn=!translitOn; try{ localStorage.setItem("keimenon_translit", translitOn?"1":"0"); }catch(e){} renderTranslit(); };
 const _buildBase = $("buildBtn").onclick;
-$("buildBtn").onclick = ()=>{ _buildBase(); renderTranslit(); };
+$("buildBtn").onclick = ()=>{ _buildBase(); renderTranslit(); if($("passBox").style.display!=="none") loadPassNote(); };
 
 // ---------- fontes lexicais: dicionários do usuário + Wiktionary, um bloco por fonte ----------
 function userDicts(){ try{ const s=localStorage.getItem("keimenon_dicts"); return s?JSON.parse(s):[]; }catch(e){ return []; } }
@@ -3273,7 +3320,7 @@ function renderNotesList(){
   });
   $("notesList").innerHTML = hits.length
     ? hits.map(k=>{
-        const e=notes[k], lm=(e.ai&&e.ai.lemma)||k.split("|")[1];
+        const e=notes[k], lm=(e.ai&&e.ai.lemma)||(k.endsWith("@passagem")?"📄 Nota da passagem":k.split("|")[1]);
         const gloss=(e.ai&&e.ai.gloss)?' <span class="nmeta">('+escH(e.ai.gloss)+')</span>':"";
         const idx=INDEX.find(x=>x.ref===e.ref);
         const cap=CORPUS["tucidides "+e.ref]||"";
@@ -3314,6 +3361,140 @@ $("notesImportFile").onchange = async e=>{
   }catch(err){ alert("Erro ao importar: "+err.message); }
   e.target.value="";
 };
+
+// ---------- ambiente ----------
+const AMBIENTE = "closed-beta";   // deploy fechado de teste — não público (Especificação Beta v1, §1)
+
+// ---------- 4.5: painel do usuário (local, sem servidor) ----------
+function logHist(ref){
+  try{
+    const s=localStorage.getItem("keimenon_hist"); const l=s?JSON.parse(s):[];
+    if(l[0] && l[0].ref===ref) return;
+    l.unshift({ref, quando:new Date().toISOString()});
+    localStorage.setItem("keimenon_hist", JSON.stringify(l.slice(0,100)));
+  }catch(e){}
+}
+$("painelBtn").onclick = ()=>{
+  const p=$("painel");
+  p.style.display = p.style.display==="none" ? "block" : "none";
+  if(p.style.display==="block"){ renderPainel(); p.scrollIntoView({behavior:"smooth",block:"start"}); }
+};
+$("userName").addEventListener("input", ()=>{
+  try{ localStorage.setItem("keimenon_user", $("userName").value.trim()); }catch(e){}
+  $("userHello").textContent = $("userName").value.trim() ? "olá, "+$("userName").value.trim()+"." : "";
+});
+$("painelVerNotas").onclick = ()=>{ $("painel").style.display="none"; $("notesBtn").click(); };
+function renderPainel(){
+  try{ $("userName").value = localStorage.getItem("keimenon_user")||""; }catch(e){}
+  $("userHello").textContent = $("userName").value ? "olá, "+$("userName").value+"." : "";
+  let hist=[]; try{ const s=localStorage.getItem("keimenon_hist"); hist=s?JSON.parse(s):[]; }catch(e){}
+  $("histList").innerHTML = hist.length
+    ? hist.slice(0,15).map(x=>'<a href="#" data-ref="'+escH(x.ref)+'">Tucídides '+escH(x.ref)+'</a> <span style="opacity:.7">('+new Date(x.quando).toLocaleDateString("pt-BR")+')</span>').join(" · ")
+    : "nenhuma pesquisa registrada ainda.";
+  $("histList").querySelectorAll("a").forEach(a=>a.onclick=ev=>{
+    ev.preventDefault();
+    $("ref").value="Tucídides "+a.dataset.ref; $("findBtn").click();
+    if($("origText").value && $("transText").value) $("buildBtn").click();
+    $("painel").style.display="none";
+  });
+  const notes=loadNotes();
+  const keys=Object.keys(notes).sort((a,b)=>notes[b].atualizado.localeCompare(notes[a].atualizado)).slice(0,5);
+  $("painelNotes").innerHTML = keys.length
+    ? keys.map(k=>{
+        const e=notes[k], lm=(e.ai&&e.ai.lemma)||(k.endsWith("@passagem")?"nota da passagem":k.split("|")[1]);
+        return '<div class="noteitem" data-k="'+escH(k)+'"><b>'+escH(lm)+'</b> <span class="nmeta">— '+escH(e.ref)+'</span><div class="small">'+escH(e.nota.slice(0,90))+'</div></div>';
+      }).join("")
+    : '<p class="small">nenhum comentário ainda.</p>';
+  $("painelNotes").querySelectorAll(".noteitem").forEach(it=>it.onclick=()=>{
+    const e=loadNotes()[it.dataset.k]; if(!e) return;
+    $("ref").value="Tucídides "+e.ref; $("findBtn").click();
+    if($("origText").value && $("transText").value) $("buildBtn").click();
+    if(e.ai){ selWord=e.ai.lemma||""; selSide="orig"; renderResult(e.ai); }
+    $("painel").style.display="none";
+  });
+}
+
+// ---------- 4.3: nota da passagem (chave ref|@passagem, entra no menu Comentários) ----------
+let passTimer=null;
+function passKey(){ const r=parseRef(); return (r?r.ref:"?")+"|@passagem"; }
+function loadPassNote(){
+  const e=loadNotes()[passKey()];
+  $("passNote").value = e ? e.nota : "";
+  $("passStatus").textContent = e ? "· salva em "+new Date(e.atualizado).toLocaleDateString("pt-BR") : "";
+}
+$("passBtn").onclick = ()=>{
+  const b=$("passBox");
+  b.style.display = b.style.display==="none" ? "block" : "none";
+  if(b.style.display==="block"){ loadPassNote(); $("passNote").focus(); }
+};
+$("passNote").addEventListener("input", ()=>{
+  clearTimeout(passTimer);
+  $("passStatus").textContent="…";
+  passTimer=setTimeout(()=>{
+    const notes=loadNotes(), nota=$("passNote").value.trim(), k=passKey();
+    if(!nota){ delete notes[k]; saveNotes(notes); $("passStatus").textContent=""; return; }
+    notes[k]={ref:(parseRef()||{}).ref||"?", nota, passagem:true, atualizado:new Date().toISOString()};
+    $("passStatus").textContent = saveNotes(notes) ? "✓ salva" : "⚠ sem espaço";
+  }, 600);
+});
+
+// ---------- 4.6: ocorrências da palavra na obra ----------
+const normGrego = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ς/g,"σ").replace(/[^α-ω]/g,"");
+const RADICAL_RE = /(οισιν|αισιν|ουσιν|εσσιν|ουσι|εσσι|οιο|οισ|αισ|ουσ|ων|ον|οσ|ου|ησ|ην|αι|ασ|αν|οι|ει|εσ|ῳ|α|η|ω|ι|ε|υ|σ)$/;
+function radicalDe(t){ const n=normGrego(t); const c=n.replace(RADICAL_RE,""); return c.length>=4?c:n; }
+let TOK_INDEX=null;
+function buildTokIndex(){
+  if(TOK_INDEX) return TOK_INDEX;
+  TOK_INDEX={};
+  for(const k in CORPUS){
+    const ref=k.replace("tucidides ",""), txt=CORPUS[k], toks=[];
+    let off=0;
+    for(const t of txt.split(/(\s+)/)){
+      if(!/^\s*$/.test(t)){ const n=normGrego(t); if(n.length>2) toks.push([n, off]); }
+      off+=t.length;
+    }
+    TOK_INDEX[ref]=toks;
+  }
+  return TOK_INDEX;
+}
+let ocorrTermo="", ocorrModo="radical";
+function renderOcorrencias(termo){
+  if(termo) ocorrTermo=termo;
+  const alvoN=normGrego(ocorrTermo);
+  if(!alvoN || alvoN.length<3){ $("ocorrBox").style.display="none"; return; }
+  const rad=radicalDe(ocorrTermo), idx=buildTokIndex();
+  const livro=$("ocLivro").value, atual=(parseRef()||{}).ref;
+  $("ocModoRad").classList.toggle("on", ocorrModo==="radical");
+  $("ocModoEx").classList.toggle("on", ocorrModo==="exata");
+  const hits=[]; let total=0;
+  for(const ref of REF_ORDER){
+    if(livro!=="todos" && ref.split(".")[0]!==livro) continue;
+    const toks=idx[ref]; let primeiro=-1, n=0;
+    for(const [tk,off] of toks){
+      const bate = ocorrModo==="exata" ? tk===alvoN : tk.startsWith(rad);
+      if(bate){ n++; if(primeiro<0) primeiro=off; }
+    }
+    if(n){ total+=n; hits.push({ref, n, off:primeiro}); }
+  }
+  $("ocorrTermoEl").textContent = ocorrTermo + (ocorrModo==="radical" ? " (radical: "+rad+"–)" : "");
+  $("ocResumo").textContent = total ? total+" ocorrência(s) em "+hits.length+" trecho(s)" : "nenhuma ocorrência";
+  $("ocLista").innerHTML = hits.slice(0,25).map(hh=>{
+    const txt=CORPUS["tucidides "+hh.ref];
+    const a=Math.max(0,hh.off-55), b=Math.min(txt.length,hh.off+75);
+    const snip=(a>0?"…":"")+txt.slice(a,b).replace(/\s+/g," ")+(b<txt.length?"…":"");
+    return '<div class="oc-item" data-ref="'+hh.ref+'"><b>'+hh.ref+'</b>'+(hh.ref===atual?' <span class="small">(trecho atual)</span>':'')+
+      ' <span class="small">× '+hh.n+'</span><div class="oc-snip">'+escH(snip)+'</div></div>';
+  }).join("") + (hits.length>25 ? '<p class="small" style="margin:8px 0 0">+ '+(hits.length-25)+' trecho(s) — refine pelo livro.</p>' : "");
+  $("ocLista").querySelectorAll(".oc-item").forEach(it=>it.onclick=()=>{
+    $("ref").value="Tucídides "+it.dataset.ref; $("findBtn").click();
+    if($("origText").value && $("transText").value) $("buildBtn").click();
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+  $("ocorrBox").style.display="block";
+}
+$("ocModoRad").onclick = ()=>{ ocorrModo="radical"; renderOcorrencias(); };
+$("ocModoEx").onclick = ()=>{ ocorrModo="exata"; renderOcorrencias(); };
+$("ocLivro").onchange = ()=>renderOcorrencias();
 
 // ---------- chamada genérica ao LLM ----------
 async function callLLM({system, user, image}){
