@@ -1,0 +1,8 @@
+# Private books, extracted payloads, secrets and user data must never be deployed.
+*.pdf
+*.zip
+*-local-chapters.*
+*-local-lines.*
+.env*
+private/
+node_modules/
