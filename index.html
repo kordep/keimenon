@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keimenon.org · UX v0.8.0 preview</title>
+<title>Keimenon.org · UX v0.8.1 preview</title>
 <style>
   @font-face{font-family:"Space Grotesk";src:url("space-grotesk-latin-600-normal.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
   :root{
@@ -203,7 +203,7 @@
   body:not(.reading) #setupHint .barbtn{justify-content:flex-end}
   body:not(.reading) #setupHint button{padding:11px 22px}
   body:not(.reading) #setupHint .small{order:-1;margin-right:auto}
-  body:not(.reading) #cfg,body:not(.reading) #painel,body:not(.reading) #notesPanel{border:1px solid #dfddd8;box-shadow:0 18px 55px rgba(35,32,27,.09);margin-bottom:30px}
+  body:not(.reading) #cfg,body:not(.reading) #notesPanel{border:1px solid #dfddd8;box-shadow:0 18px 55px rgba(35,32,27,.09);margin-bottom:30px}
   body:not(.reading) .idx{border-top-color:#e3e0da}
   body:not(.reading) details{margin-top:20px}
   .setup-original-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
@@ -238,7 +238,7 @@
 
   /* Comentários vivem em uma página/aba própria (#comentarios) */
   body.comments-page .setup-intro,
-  body.comments-page #cfg,body.comments-page #painel,
+  body.comments-page #cfg,
   body.comments-page #cardStep1,body.comments-page #cardStep2,body.comments-page #setupHint,
   body.comments-page #editBar,body.comments-page #cmpMeta,body.comments-page #compare,
   body.comments-page #passBox,body.comments-page #interpBar,body.comments-page .page-nav,
@@ -246,7 +246,7 @@
   body.comments-page .wrap>details{display:none!important}
   body.comments-page #notesPanel{display:block!important;max-width:760px;margin:0 auto;border:0;box-shadow:none;background:transparent;padding:0}
   body.comments-page .wrap{max-width:820px}
-  body.comments-page header #painelBtn,body.comments-page header #cfgToggle{display:none}
+  body.comments-page header #cfgToggle{display:none}
   body.comments-page header #commentsBackBtn{display:block;margin-left:auto;background:#efe7dc;color:#5e4423;border:0;border-radius:9px}
   body.comments-page header #uiLang{width:auto;background:#efe7dc;color:#5e4423;border:0;border-radius:9px;padding:8px 28px 8px 11px}
   @media(max-width:820px){body:not(.reading) .wrap{padding:38px 20px 60px}.setup-intro{text-align:left;margin-bottom:30px}.setup-intro h2{font-size:26px}.page-nav .nav-label{display:none}.page-nav button{padding:8px 18px}}
@@ -310,7 +310,6 @@
 <body>
 <header>
   <h1>keimenon.org <span class="betaflag" title="Preview">beta</span></h1>
-  <button class="ghost" id="painelBtn">meu keimenon</button>
   <button class="ghost" id="cfgToggle">Configurar API</button>
   <button class="ghost" id="commentsBackBtn">← Voltar à leitura</button>
   <select id="uiLang" aria-label="Idioma da interface" title="Idioma da interface">
@@ -324,32 +323,6 @@
     <h2>Preparar análise</h2>
     <p>Comece escolhendo a citação canônica abaixo.</p>
   </section>
-
-  <!-- PAINEL DO USUÁRIO -->
-  <div class="card" id="painel" style="display:none">
-    <h2>meu keimenon</h2>
-    <div class="row" style="align-items:end">
-      <div style="flex:0 0 300px"><label>Perfil ativo — modo local</label><select id="profileSelect"></select></div>
-      <div style="flex:0 0 auto"><button class="ghost" id="profileAdd">＋ novo perfil</button></div>
-    </div>
-    <p class="small">Nesta versão não há autenticação real: os perfis pertencem a este navegador. A atividade registrada é visível ao administrador local.</p>
-    <div class="row" style="align-items:center">
-      <div style="flex:0 0 260px"><label>Nome de exibição</label><input type="text" id="userName" placeholder="como quer ser chamado?"></div>
-      <div class="small" id="userHello" style="margin-top:18px"></div>
-    </div>
-    <div style="margin-top:14px"><label>Histórico de pesquisas</label><div id="histList" class="small" style="margin-top:6px"></div></div>
-    <div style="margin-top:14px"><label>Comentários recentes</label><div id="painelNotes"></div>
-      <button class="ghost" id="painelVerNotas" style="margin-top:8px">ver todos em 🗒 Comentários</button></div>
-    <div style="margin-top:18px"><label>Custos por sessão</label>
-      <p class="small" style="margin:4px 0 0">Registro local por dia, com modelo, tokens e motivo de cada chamada.</p>
-      <div id="costDashboard"></div>
-      <button class="ghost" id="costExportCsv" style="margin-top:8px">⬇ exportar custos CSV</button>
-    </div>
-    <div id="adminArea" style="display:none;margin-top:22px;border-top:1px solid var(--line);padding-top:16px">
-      <div class="row" style="align-items:center"><div><label>Administração local</label><p class="small" style="margin:3px 0">Atividade por perfil e biblioteca compartilhada de análises.</p></div><div style="flex:0 0 auto"><button class="ghost" id="adminExport">⬇ backup administrativo</button></div></div>
-      <div id="adminActivity"></div>
-    </div>
-  </div>
 
   <!-- COMENTÁRIOS -->
   <div class="card" id="notesPanel" style="display:none">
@@ -4047,7 +4020,7 @@ function trackCost(provider, model, usage, context={}){
     window.KeimenonPlatform?.track?.("Chamada à IA",{note:context.purpose||"",ref:context.ref||"",target:context.target||"",model,cost:lastCallCost});
     localStorage.setItem("keimenon_cost_ledger",JSON.stringify(ledger));
   }catch(e){}
-  renderCost(); renderCostDashboard();
+  renderCost();
 }
 function costLocale(){ return {
   pt:{acc:"acumulados",calls:"chamada(s)",input:"tokens de entrada",output:"de saída",unknown:"sem preço na tabela",reset:"zerar",none:"nenhuma chamada registrada ainda nesta calculadora.",clear:"Apagar todo o histórico local de custos?",detailsNone:"Nenhuma chamada detalhada registrada ainda.",total:"total registrado",detailed:"detalhadas",today:"Hoje",time:"Hora",why:"Por quê",ref:"Referência / alvo",model:"Modelo",tokens:"Tokens E/S",cost:"Custo",noPrice:"sem preço"},
@@ -4061,39 +4034,9 @@ function renderCost(){
     ? `<b>≈ US$ ${c.usd.toFixed(4)}</b> ${w.acc} · ${c.chamadas} ${w.calls} · ${(c.tin/1000).toFixed(1)}k ${w.input} / ${(c.tout/1000).toFixed(1)}k ${w.output}${c.semPreco?` · ${c.semPreco} ${w.unknown}`:""} — <a href="#" id="costReset">${w.reset}</a>`
     : w.none;
   const r=$("costReset");
-  if(r) r.onclick = ev=>{ ev.preventDefault(); if(!confirm(w.clear)) return; localStorage.removeItem("keimenon_costs"); localStorage.removeItem("keimenon_cost_ledger"); renderCost(); renderCostDashboard(); };
+  if(r) r.onclick = ev=>{ ev.preventDefault(); if(!confirm(w.clear)) return; localStorage.removeItem("keimenon_costs"); localStorage.removeItem("keimenon_cost_ledger"); renderCost(); };
 }
 renderCost();
-
-function renderCostDashboard(){
-  const el=$("costDashboard"); if(!el) return;
-  const w=costLocale();
-  const allRows=costLedger(), me=window.KeimenonPlatform?.current?.();
-  const rows=me&&me.role!=="admin"?allRows.filter(x=>x.profileId===me.id):allRows;
-  const today=localDay(new Date()), oldAggregate=me&&me.role!=="admin"?{usd:rows.reduce((s,x)=>s+(x.usd||0),0),chamadas:rows.length}:costData();
-  if(!rows.length){
-    el.innerHTML=oldAggregate.chamadas
-      ? '<div class="cost-summary"><div class="cost-kpi"><b>US$ '+oldAggregate.usd.toFixed(4)+'</b>total anterior</div><div class="cost-kpi"><b>'+oldAggregate.chamadas+'</b>chamadas</div></div><p class="small">Esses custos foram contabilizados antes do diário detalhado; sessão e motivo não podem ser recuperados. As próximas chamadas serão discriminadas aqui.</p>'
-      : '<p class="small">'+w.detailsNone+'</p>';
-    return;
-  }
-  const groups={}; rows.forEach(x=>(groups[x.session]||(groups[x.session]=[])).push(x));
-  const detailedTotal=rows.reduce((s,x)=>s+(x.usd||0),0), known=rows.filter(x=>x.usd!=null).length;
-  const aggregate=costData(), priorCalls=Math.max(0,aggregate.chamadas-rows.length), priorUsd=Math.max(0,aggregate.usd-detailedTotal);
-  const total=Math.max(aggregate.usd,detailedTotal), totalCalls=Math.max(aggregate.chamadas,rows.length);
-  el.innerHTML='<div class="cost-summary"><div class="cost-kpi"><b>US$ '+total.toFixed(4)+'</b>'+w.total+'</div><div class="cost-kpi"><b>'+totalCalls+'</b>'+w.calls+'</div><div class="cost-kpi"><b>'+known+'/'+rows.length+'</b>'+w.detailed+'</div></div>'+(priorCalls?'<p class="small">'+priorCalls+' chamada(s) anterior(es), ≈ US$ '+priorUsd.toFixed(4)+', foram contabilizadas antes do diário detalhado e não têm sessão ou motivo recuperável.</p>':'')+Object.keys(groups).sort().reverse().map(day=>{
-    const xs=groups[day], usd=xs.reduce((s,x)=>s+(x.usd||0),0), dt=new Date(day+'T12:00:00');
-    const title=day===today?w.today+' — '+dt.toLocaleDateString():dt.toLocaleDateString();
-    return '<details class="cost-session" '+(day===today?'open':'')+'><summary><b>'+escH(title)+'</b> · '+xs.length+' '+w.calls+' · US$ '+usd.toFixed(4)+'</summary><div style="overflow-x:auto"><table class="cost-table"><thead><tr><th>'+w.time+'</th><th>'+w.why+'</th><th>'+w.ref+'</th><th>'+w.model+'</th><th>'+w.tokens+'</th><th>'+w.cost+'</th></tr></thead><tbody>'+xs.slice().reverse().map(x=>'<tr><td>'+new Date(x.at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</td><td class="cost-purpose">'+escH(x.motivo)+'</td><td>'+escH([x.ref,x.alvo].filter(Boolean).join(' · ')||'—')+'</td><td>'+escH(x.provider+' / '+x.model)+'</td><td>'+x.tin+' / '+x.tout+'</td><td>'+(x.usd==null?w.noPrice:'US$ '+x.usd.toFixed(4))+'</td></tr>').join('')+'</tbody></table></div></details>';
-  }).join('');
-}
-$("costExportCsv").onclick=()=>{
-  const rows=costLedger(); if(!rows.length) return alert("Nenhum custo detalhado para exportar.");
-  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
-  const csv=['sessao,data_hora,motivo,referencia,alvo,provedor,modelo,tokens_entrada,tokens_saida,custo_usd',...rows.map(x=>[x.session,x.at,x.motivo,x.ref,x.alvo,x.provider,x.model,x.tin,x.tout,x.usd].map(q).join(','))].join('\r\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'})); a.download='keimenon-custos-'+localDay(new Date())+'.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-};
-renderCostDashboard();
 
 // ---------- navegação de capítulos (‹ ›) ----------
 const REF_ORDER = Object.keys(CORPUS).map(k=>k.replace("tucidides ","")).sort((a,b)=>{
@@ -4199,7 +4142,7 @@ $("notesImportFile").onchange = async e=>{
 // ---------- ambiente ----------
 const AMBIENTE = "public-preview";   // deploy fechado de teste — não público (Especificação Beta v1, §1)
 
-// ---------- 4.5: painel do usuário (local, sem servidor) ----------
+// ---------- histórico local preservado (sem painel de perfil) ----------
 function logHist(ref){
   try{
     const key=profileStorageKey("keimenon_hist"), s=localStorage.getItem(key); const l=s?JSON.parse(s):[];
@@ -4207,46 +4150,6 @@ function logHist(ref){
     l.unshift({ref, quando:new Date().toISOString()});
     localStorage.setItem(key, JSON.stringify(l.slice(0,100)));
   }catch(e){}
-}
-$("painelBtn").onclick = ()=>{
-  const p=$("painel");
-  p.style.display = p.style.display==="none" ? "block" : "none";
-  if(p.style.display==="block"){ renderPainel(); p.scrollIntoView({behavior:"smooth",block:"start"}); }
-};
-$("userName").addEventListener("change", ()=>{
-  window.KeimenonPlatform?.renameCurrent?.($("userName").value);
-  $("userHello").textContent = $("userName").value.trim() ? (uiLanguage==="it"?"ciao, ":uiLanguage==="en"?"hello, ":"olá, ")+$("userName").value.trim()+"." : "";
-});
-$("painelVerNotas").onclick = ()=>{ $("painel").style.display="none"; $("notesBtn").click(); };
-function renderPainel(){
-  renderCostDashboard();
-  $("userName").value=window.KeimenonPlatform?.current?.().name||"";
-  $("userHello").textContent = $("userName").value ? (uiLanguage==="it"?"ciao, ":uiLanguage==="en"?"hello, ":"olá, ")+$("userName").value+"." : "";
-  let hist=[]; try{ const s=localStorage.getItem(profileStorageKey("keimenon_hist")); hist=s?JSON.parse(s):[]; }catch(e){}
-  $("histList").innerHTML = hist.length
-    ? hist.slice(0,15).map(x=>'<a href="#" data-ref="'+escH(x.ref)+'">'+(uiLanguage==="it"?"Tucidide ":uiLanguage==="en"?"Thucydides ":"Tucídides ")+escH(x.ref)+'</a> <span style="opacity:.7">('+new Date(x.quando).toLocaleDateString("pt-BR")+')</span>').join(" · ")
-    : (uiLanguage==="it"?"nessuna ricerca registrata.":uiLanguage==="en"?"no searches recorded yet.":"nenhuma pesquisa registrada ainda.");
-  $("histList").querySelectorAll("a").forEach(a=>a.onclick=ev=>{
-    ev.preventDefault();
-    $("ref").value="Tucídides "+a.dataset.ref; $("findBtn").click();
-    if($("origText").value && $("transText").value) $("buildBtn").click();
-    $("painel").style.display="none";
-  });
-  const notes=loadNotes();
-  const keys=Object.keys(notes).sort((a,b)=>notes[b].atualizado.localeCompare(notes[a].atualizado)).slice(0,5);
-  $("painelNotes").innerHTML = keys.length
-    ? keys.map(k=>{
-        const e=notes[k], lm=noteLemmaDisplay(e,k,"nota da passagem");
-        return '<div class="noteitem" data-k="'+escH(k)+'"><b>'+escH(lm)+'</b> <span class="nmeta">— '+escH(e.ref)+'</span><div class="small">'+escH(e.nota.slice(0,90))+'</div></div>';
-      }).join("")
-    : '<p class="small">'+(uiLanguage==="it"?"nessun commento.":uiLanguage==="en"?"no comments yet.":"nenhum comentário ainda.")+'</p>';
-  $("painelNotes").querySelectorAll(".noteitem").forEach(it=>it.onclick=()=>{
-    const e=loadNotes()[it.dataset.k]; if(!e) return;
-    $("ref").value="Tucídides "+e.ref; $("findBtn").click();
-    if($("origText").value && $("transText").value) $("buildBtn").click();
-    if(e.ai){ selWord=e.ai.lemma||""; selSide="orig"; renderResult(e.ai); }
-    $("painel").style.display="none";
-  });
 }
 
 // ---------- comentários associados à passagem atual ----------

@@ -1,4 +1,4 @@
-# Keimenon · public preview v0.8.0
+# Keimenon · public preview v0.8.1
 
 Comparative Thucydides reader, with PT / EN / IT interface.
 
@@ -11,6 +11,7 @@ Comparative Thucydides reader, with PT / EN / IT interface.
 - Book data is stored locally, shared by local profiles, not synced or included in the administrative backup. Keep original files. This is not authentication.
 - AI calls are optional, use a reader-supplied key held in the tab, and send the required excerpt/image to the chosen provider.
 - No online login, community backend, or additional authors in this release.
+- The “my keimenon” dashboard and profile/admin controls have been removed. My books, Comments and API settings remain. Existing local data and the active profile are preserved; the administrative backup UI is no longer available.
 - Fonts and PDF.js licenses are in `assets/`.
 
 This public deployment replaces the old sealed presentation UI. There is no shared site password in the current app.

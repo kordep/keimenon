@@ -86,7 +86,6 @@ body.reading #editBar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:
 .comment-group{background:var(--panel)}.community-comments{background:var(--panel);border-color:var(--line)}
 .community-comments h4{font:400 20px var(--f-read);text-transform:none;letter-spacing:0;color:var(--ink)}
 .passage-comment b{font:400 19px var(--f-read)}
-#painel .cost-kpi{background:var(--panel);border:1px solid var(--line)}
 .noteitem{background:var(--panel);margin-top:8px;border:1px solid var(--line);border-radius:8px}
 body.comments-page header #commentsBackBtn,body.comments-page header #uiLang{background:var(--paper-2);color:var(--ink);border:1px solid var(--line)}
 .page-nav{margin:24px 0!important}
