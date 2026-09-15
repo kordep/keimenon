@@ -1,0 +1,34 @@
+{
+  "pages": 278,
+  "sections": 1355,
+  "books": {
+    "1": 28,
+    "2": 27,
+    "3": 32,
+    "4": 27,
+    "5": 32,
+    "6": 28,
+    "7": 28,
+    "8": 27,
+    "9": 22,
+    "10": 27
+  },
+  "sourceSHA256": {
+    "republic-greek.xml": "5f9f8ad62cdbfb0446223cc93a52215614c10e66c4ffd53a99d497ded855edfd",
+    "republic-shorey.xml": "da9a595341a58134c9def4af2623675abf8ff13a32ebcf9e4aadbd14c836e64f",
+    "PERSEUS-LICENSE-README.md": "d34e63803b77bb1f4addcda19572a01e3e732a8ffd6a5b0a916d5baf7550b2de",
+    "republic-jowett-55201.html": "683df4e8438eae4d1363ffc9ae8ef9144990bff8d82e785adac1fe030992d5f4"
+  },
+  "translations": {
+    "shorey": 1355,
+    "jowett": 1355
+  },
+  "method": "Exact matching of canonical Stephanus milestones; no inferred translation alignment.",
+  "licensing": "Perseus repository declares CC BY-SA 4.0 unless otherwise indicated; neither the Shorey TEI header nor CTS metadata contain a specific exception. This is a digital-edition license, not a blanket public-domain claim about Loeb printings.",
+  "editorialNotes": [
+    "Gutenberg duplicate 419E ignored in favour of 419A in the same span; non-section 449 anchor ignored.",
+    "Perseus XML specifies Burnet 1905; do not silently copy the 1902 date from the design screenshot.",
+    "Gutenberg compilation: primarily Jowett 1888, full Stephanus markers from the 1908 printing.",
+    "Notes, bibliography labels, deleted Greek text, page numbers and editorial side notes excluded."
+  ]
+}
