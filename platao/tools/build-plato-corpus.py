@@ -14,6 +14,10 @@ parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--work-dir',type=Path,default=ROOT/'platao')
 WORK=parser.parse_args().work_dir.resolve()
 SOURCE=WORK/'sources'
+# Preserve license text while normalizing transport newlines, so its recorded
+# SHA-256 also matches GitHub Pages (Git stores Markdown with LF).
+license_readme=SOURCE/'PERSEUS-LICENSE-README.md'
+license_readme.write_bytes(license_readme.read_text(encoding='utf8').encode('utf8'))
 ns={'t':'http://www.tei-c.org/ns/1.0'}
 clean=lambda s:re.sub(r'\s+',' ',s).strip()
 def tei_sections(filename):
